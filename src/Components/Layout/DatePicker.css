@@ -1,0 +1,9 @@
+.datePicker {
+  padding: 2px;
+}
+.datePicker input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-radius: 2px;
+}
