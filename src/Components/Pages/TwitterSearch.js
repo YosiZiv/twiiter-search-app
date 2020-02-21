@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import "./TwitterSearch.css";
 import TextInput from "../Layout/TextInput";
 import DatePickerComponent from "../Layout/DatePicker";
-const TwitterSearchPage = props => {
+import RegionSelect from "../Layout/RegionSelect";
+const TwitterSearchPage = () => {
+  const date = new Date();
   const [searchTwitterForm, setSearchTwitterForm] = useState({});
-  //   const [startDate, setStartDate] = useState(new Date());
+  // const [initDate, setInitDate] = useState(new Date());
   const {
     hashtags = "",
-    startDate = null,
+    startDate = date.setDate(date.getDate() - 7),
     endDate = null,
     lang = "en"
   } = searchTwitterForm;
@@ -24,36 +26,33 @@ const TwitterSearchPage = props => {
 
     setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
   };
-  console.log(searchTwitterForm);
+  console.log(searchTwitterForm["startDate"]);
 
   return (
-    <div className='w-100'>
-      <div className='row d-flex justify'>
-        <div className='mt-5 d-flex '>
-          <h1 className='text-center'>Twitter Search App</h1>
-        </div>
-      </div>
+    <div className='w-100 h-100'>
+      <h4 className='m-2 text-center'>Twitter Search App</h4>
       <form>
-        <div>
-          <TextInput
-            handleInputChange={handleInputChange}
-            id='hashtags'
-            type='text'
-            defaultValue={hashtags}
-          />
-        </div>
-        <div>
+        <TextInput
+          handleInputChange={handleInputChange}
+          id='hashtags'
+          type='text'
+          defaultValue={hashtags}
+        />
+        <div className='d-flex'>
           <DatePickerComponent
             id='startDate'
             handleTimeChange={date => handleTimeChange(date, "startDate")}
+            date={startDate}
           />
-        </div>
-        <div>
+
           <DatePickerComponent
             id='endDate'
-            handleTimeChange={date => handleTimeChange(date, "endDate")}
+            handleTimeChange={date => handleTimeChange(date, "startDate")}
+            date={endDate}
           />
         </div>
+
+        <RegionSelect />
       </form>
     </div>
   );
