@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./TwitterSearch.css";
 import TextInput from "../Layout/TextInput";
+import DatePicker from "../Layout/DatePicker";
 const TwitterSearchPage = props => {
   const [searchTwitterForm, setSearchTwitterForm] = useState({});
   const {
@@ -32,6 +33,9 @@ const TwitterSearchPage = props => {
             type='text'
             defaultValue={hashtags}
           />
+        </div>
+        <div>
+          <DatePicker />
         </div>
       </form>
     </div>
