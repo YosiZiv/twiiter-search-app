@@ -48,6 +48,12 @@ const TwitterSearchPage = props => {
             handleTimeChange={date => handleTimeChange(date, "startDate")}
           />
         </div>
+        <div>
+          <DatePickerComponent
+            id='endDate'
+            handleTimeChange={date => handleTimeChange(date, "endDate")}
+          />
+        </div>
       </form>
     </div>
   );
