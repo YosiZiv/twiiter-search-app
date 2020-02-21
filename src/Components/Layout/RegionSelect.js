@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 // note that you can also export the source data via CountryRegionData. It's in a deliberately concise format to
 // keep file size down
@@ -7,35 +7,29 @@ import {
   RegionDropdown,
   CountryRegionData
 } from "react-country-region-selector";
+const RegionSelect = () => {
+  const [country, setCountry] = useState();
+  const [region, setRegion] = useState();
 
-export default class RegionSelect extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { country: "", region: "" };
-  }
-
-  selectCountry(val) {
+  const selectCountry = val => {
     this.setState({ country: val });
-  }
+  };
 
-  selectRegion(val) {
+  const selectRegion = val => {
     this.setState({ region: val });
-  }
-
-  render() {
-    const { country, region } = this.state;
-    return (
-      <div>
-        <CountryDropdown
-          value={country}
-          onChange={val => this.selectCountry(val)}
-        />
-        <RegionDropdown
-          country={country}
-          value={region}
-          onChange={val => this.selectRegion(val)}
-        />
-      </div>
-    );
-  }
-}
+  };
+  return (
+    <div>
+      <CountryDropdown
+        value={country}
+        onChange={val => this.selectCountry(val)}
+      />
+      <RegionDropdown
+        country={country}
+        value={region}
+        onChange={val => this.selectRegion(val)}
+      />
+    </div>
+  );
+};
+export default RegionSelect;
