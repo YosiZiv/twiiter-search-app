@@ -5,7 +5,7 @@ import "./App.css";
 
 function App() {
   return (
-    <div className='pageContainer'>
+    <div className='container'>
       <TwitterSearhPage />
     </div>
   );
