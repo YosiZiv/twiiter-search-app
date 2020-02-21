@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import "./TwitterSearch.css";
 import TextInput from "../Layout/TextInput";
-import DatePicker from "../Layout/DatePicker";
+import DatePickerComponent from "../Layout/DatePicker";
 const TwitterSearchPage = props => {
   const [searchTwitterForm, setSearchTwitterForm] = useState({});
+  //   const [startDate, setStartDate] = useState(new Date());
   const {
     hashtags = "",
     startDate = null,
     endDate = null,
     lang = "en"
   } = searchTwitterForm;
+  console.log(startDate);
   const handleInputChange = e => {
     const {
       target: { id, value }
@@ -17,6 +19,12 @@ const TwitterSearchPage = props => {
     console.log("function work", e.target.id);
     return setSearchTwitterForm({ ...searchTwitterForm, [id]: value });
   };
+  const handleTimeChange = (date, id) => {
+    console.log("function work 2 ", date, id);
+
+    setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
+  };
+  console.log(searchTwitterForm);
 
   return (
     <div className='w-100'>
@@ -35,7 +43,10 @@ const TwitterSearchPage = props => {
           />
         </div>
         <div>
-          <DatePicker />
+          <DatePickerComponent
+            id='startDate'
+            handleTimeChange={date => handleTimeChange(date, "startDate")}
+          />
         </div>
       </form>
     </div>

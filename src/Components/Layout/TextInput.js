@@ -25,7 +25,7 @@ const TextInput = props => {
         value={defaultValue}
         disabled={disabled}
         onChange={handleInputChange}
-        placeholder={`Enter ${name}`}
+        placeholder={`Enter ${id}`}
         autoComplete='off'
         className='form-control'
       />
