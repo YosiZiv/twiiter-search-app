@@ -1,8 +1,10 @@
 import React from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const DatePicker = () => (
+const DatePickerComponent = ({ startDate, handleTimeChange, id }) => (
   <div>
-    <h1>Date picker component</h1>
+    <DatePicker id={id} selected={startDate} onChange={handleTimeChange} />
   </div>
 );
-export default DatePicker;
+export default DatePickerComponent;
