@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import TwitterSearhPage from "./Components/Pages/TwitterSearch";
+import languageJson from "./assets/leng.json";
+import "./App.css";
 
 function App() {
+  const [languages, setLanguages] = useState(null);
+
+  useEffect(() => {
+    console.log("IMPORTENT$$$$$$$$$$$$$$$$");
+    const languageObject = JSON.parse(JSON.stringify(languageJson));
+    const languageArray = Object.values(languageObject);
+    setLanguages(languageArray);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <TwitterSearhPage languages={languages} />
     </div>
   );
 }
