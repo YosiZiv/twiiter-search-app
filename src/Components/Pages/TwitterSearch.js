@@ -4,7 +4,7 @@ import TextInput from "../Layout/TextInput";
 import DatePickerComponent from "../Layout/DatePicker";
 import SelectInput from "../Layout/SelectInput";
 import Button from "../Layout/Button";
-
+import { api } from "../../api";
 const TwitterSearchPage = ({ languages }) => {
   const date = new Date();
   const [searchTwitterForm, setSearchTwitterForm] = useState({});
@@ -26,15 +26,24 @@ const TwitterSearchPage = ({ languages }) => {
 
     setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
   };
-  console.log(searchTwitterForm);
-
+  console.log(hashtags);
+  const handleTweetSearch = async () => {
+    const method = "GET";
+    const url = `1.1/search/tweets.json?q=%23${hashtags}`;
+    const request = {
+      url,
+      method
+    };
+    const response = await api(request);
+    console.log(response);
+  };
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>
         <h4 className='m-2 text-center'>Twitter Search App</h4>
       </div>
 
-      <form className='formContainer'>
+      <form className='formContainer' onSubmit={e => e.preventDefault()}>
         <div>
           <TextInput
             handleInputChange={handleInputChange}
@@ -60,7 +69,7 @@ const TwitterSearchPage = ({ languages }) => {
           <SelectInput languages={languages} />
         </div>
         <div className='buttonContainer'>
-          <Button text='Search' />
+          <Button onClick={handleTweetSearch} text='Search' />
         </div>
       </form>
     </div>
