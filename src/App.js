@@ -7,7 +7,7 @@ function App() {
   const [languages, setLanguages] = useState(null);
 
   useEffect(() => {
-    console.log("IMPORTENT$$$$$$$$$$$$$$$$");
+    console.log("TEST FOR GIT");
     const languageObject = JSON.parse(JSON.stringify(languageJson));
     const languageArray = Object.values(languageObject);
     setLanguages(languageArray);
