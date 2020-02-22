@@ -1,1 +1,11 @@
+.twitterPageContainer {
+  width: 100%;
+}
+.formContainer > * {
+  margin-top: 20px;
+}
 
+.buttonContainer {
+  width: 100%;
+  text-align: center;
+}

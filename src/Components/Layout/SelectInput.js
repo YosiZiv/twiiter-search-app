@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import languageJson from "../../assets/leng.json";
-const SelectInput = () => {
-  const language = JSON.parse(JSON.stringify(languageJson));
-  const test = Object.values(language);
-  console.log(test);
+
+const SelectInput = ({ languages }) => {
+  console.log(languages);
 
   const selectCountry = val => {
     this.setState({ country: val });
@@ -13,10 +11,6 @@ const SelectInput = () => {
   const selectRegion = val => {
     this.setState({ region: val });
   };
-  return (
-    <div>
-      <Select options={test} />
-    </div>
-  );
+  return <Select options={languages} />;
 };
 export default SelectInput;

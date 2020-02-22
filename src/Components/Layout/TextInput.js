@@ -4,7 +4,6 @@ const TextInput = props => {
   const {
     id,
     type,
-    name,
     required,
     defaultValue,
     disabled,
@@ -13,7 +12,7 @@ const TextInput = props => {
   } = props;
 
   return (
-    <div className='mb-1'>
+    <>
       <h6>
         <label className='m-0'>
           {id}: {required && <span className='text-danger'>*</span>}
@@ -32,7 +31,7 @@ const TextInput = props => {
       <div className='text-input-error-message'>
         {error && <small className='text-danger'>{error}</small>}
       </div>
-    </div>
+    </>
   );
 };
 export default TextInput;
