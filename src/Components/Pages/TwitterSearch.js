@@ -4,10 +4,12 @@ import TextInput from "../Layout/TextInput";
 import DatePickerComponent from "../Layout/DatePicker";
 import SelectInput from "../Layout/SelectInput";
 import Button from "../Layout/Button";
+import Table from "../Layout/Table";
 import { api } from "../../api";
 const TwitterSearchPage = ({ languages }) => {
   const date = new Date();
   const [searchTwitterForm, setSearchTwitterForm] = useState({});
+  const [tweets, setTweets] = useState(null);
   // const [initDate, setInitDate] = useState(new Date());
   const {
     hashtags = "",
@@ -28,15 +30,28 @@ const TwitterSearchPage = ({ languages }) => {
   };
   console.log(hashtags);
   const handleTweetSearch = async () => {
-    const method = "GET";
-    const url = `1.1/search/tweets.json?q=%23${hashtags}`;
+    const method = "POST";
+    const url = `tweeter/tweets`;
     const request = {
       url,
-      method
+      method,
+      payload: searchTwitterForm
     };
-    const response = await api(request);
-    console.log(response);
+    try {
+      const response = await api(request);
+      console.log(response.data);
+      const { filteredTweets } = response["data"];
+      if (filteredTweets.length) {
+        return setTweets(filteredTweets);
+      } else {
+        return setTweets("Couldnt found any tweets");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
+  console.log(tweets);
+
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>
@@ -72,6 +87,12 @@ const TwitterSearchPage = ({ languages }) => {
           <Button onClick={handleTweetSearch} text='Search' />
         </div>
       </form>
+
+      {tweets && (
+        <div className='tableContainer'>
+          <Table />
+        </div>
+      )}
     </div>
   );
 };
