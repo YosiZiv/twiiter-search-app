@@ -43,15 +43,28 @@ const TwitterSearchPage = ({ languages }) => {
       const { filteredTweets } = response["data"];
       if (filteredTweets.length) {
         return setTweets(filteredTweets);
-      } else {
-        return setTweets("Couldnt found any tweets");
       }
     } catch (err) {
       console.log(err);
     }
   };
   console.log(tweets);
-
+  const handleTweetSelect = async tweet => {
+    console.log(tweet);
+    const method = "POST";
+    const url = `tweeter/getembed`;
+    const request = {
+      url,
+      method,
+      payload: tweet
+    };
+    try {
+      const response = await api(request);
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>
@@ -87,12 +100,9 @@ const TwitterSearchPage = ({ languages }) => {
           <Button onClick={handleTweetSearch} text='Search' />
         </div>
       </form>
-
-      {tweets && (
-        <div className='tableContainer'>
-          <Table />
-        </div>
-      )}
+      {tweets
+        ? tweets.length && <Table onClick={handleTweetSelect} tweets={tweets} />
+        : null}
     </div>
   );
 };
