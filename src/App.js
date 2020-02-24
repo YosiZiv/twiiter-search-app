@@ -4,12 +4,12 @@ import languageJson from "./assets/leng.json";
 import "./App.css";
 
 function App() {
-  const [languages, setLanguages] = useState(null);
+  const [languages, setLanguages] = useState(null); // languages for select component
 
   useEffect(() => {
-    console.log("IMPORTENT$$$$$$$$$$$$$$$$");
-    const languageObject = JSON.parse(JSON.stringify(languageJson));
-    const languageArray = Object.values(languageObject);
+    const languagesObject = JSON.parse(JSON.stringify(languageJson));
+    // select component expect Array as input this method return array
+    const languageArray = Object.values(languagesObject);
     setLanguages(languageArray);
   }, []);
 

@@ -5,11 +5,13 @@ import DatePickerComponent from "../Layout/DatePicker";
 import SelectInput from "../Layout/SelectInput";
 import Button from "../Layout/Button";
 import Table from "../Layout/Table";
-import { api } from "../../api";
+import { TwitterTweetEmbed } from "react-twitter-embed";
+import { api } from "../../httpConfig";
 const TwitterSearchPage = ({ languages }) => {
   const date = new Date();
   const [searchTwitterForm, setSearchTwitterForm] = useState({});
   const [tweets, setTweets] = useState(null);
+  const [embedTweet, setEmbedTweet] = useState(null);
   // const [initDate, setInitDate] = useState(new Date());
   const {
     hashtags = "",
@@ -28,7 +30,7 @@ const TwitterSearchPage = ({ languages }) => {
 
     setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
   };
-  console.log(hashtags);
+  console.log(embedTweet);
   const handleTweetSearch = async () => {
     const method = "POST";
     const url = `tweeter/tweets`;
@@ -49,21 +51,33 @@ const TwitterSearchPage = ({ languages }) => {
     }
   };
   console.log(tweets);
-  const handleTweetSelect = async tweet => {
-    console.log(tweet);
-    const method = "POST";
-    const url = `tweeter/getembed`;
-    const request = {
-      url,
-      method,
-      payload: tweet
-    };
-    try {
-      const response = await api(request);
-      console.log(response.data);
-    } catch (err) {
-      console.log(err);
-    }
+  const handleTweetSelect = tweet => {
+    const tweetDom = document.getElementById("embedTweet");
+    tweetDom.innerHTML = "";
+    window.twttr.widgets.createTweet(tweet["id_str"], tweetDom, {
+      theme: "dark"
+    });
+
+    // console.log(tweet);
+    // const method = "POST";
+    // const url = `tweeter/getembed`;
+    // const request = {
+    //   url,
+    //   method,
+    //   payload: tweet
+    // };
+    // try {
+    //   const response = await api(request);
+    //   const tweet = response.data.tweet;
+    //   console.log(response.data.tweet);
+
+    //   setEmbedTweet(tweet);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
+  const createMarkup = tweet => {
+    return { __html: tweet };
   };
   return (
     <div className='twitterPageContainer'>
@@ -103,6 +117,8 @@ const TwitterSearchPage = ({ languages }) => {
       {tweets
         ? tweets.length && <Table onClick={handleTweetSelect} tweets={tweets} />
         : null}
+
+      <div id='embedTweet'></div>
     </div>
   );
 };

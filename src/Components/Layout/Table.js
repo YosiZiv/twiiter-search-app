@@ -15,12 +15,8 @@ const Table = ({ tweets, onClick }) => {
         </thead>
         <tbody>
           {tweets.map(tweet => {
-            console.log(tweet);
-
             const tdArray = []; // IMPORTENT  CODE LINE 19 -40 NEED REFACTORED OUTSIDE OF THE VIEW
             for (let key in tweet) {
-              console.log(key, tweet);
-
               switch (key) {
                 case "user":
                   tdArray[0] = <td key={tweet[key]}>{tweet[key]}</td>;
@@ -37,7 +33,6 @@ const Table = ({ tweets, onClick }) => {
                   break;
               }
             }
-            console.log(tdArray);
             return (
               <tr
                 data={tweet}
