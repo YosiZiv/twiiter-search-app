@@ -1,0 +1,12 @@
+.tableContainer table {
+  border: 1px solid black;
+}
+.tableContainer thead {
+  border-bottom: 1px solid black;
+}
+.tableContainer tr {
+  border-bottom: 1px solid black;
+}
+.tableContainer td {
+  border-right: 1px solid black;
+}

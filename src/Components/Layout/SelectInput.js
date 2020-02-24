@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import Select from "react-select";
 
 const SelectInput = ({ languages }) => {
-  console.log(languages);
-
   const selectCountry = val => {
     this.setState({ country: val });
   };
