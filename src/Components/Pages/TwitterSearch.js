@@ -24,8 +24,6 @@ const TwitterSearchPage = ({ languages }) => {
     const { id, value } = event.target;
 
     const errorsMessage = checkValidity(id, value, validation);
-    console.log(id, value, validation, errorsMessage);
-
     return setSearchTwitterForm({
       ...searchTwitterForm,
       [id]: { errorsMessage, value, isTouch: true }
@@ -44,8 +42,6 @@ const TwitterSearchPage = ({ languages }) => {
       reqData: ["id_str", "text", "user", "created_at", "retweet_count"],
       language: searchTwitterForm.language
     };
-    console.log(payload);
-
     const request = {
       url: "tweeter/tweets",
       method: "POST",
@@ -53,13 +49,8 @@ const TwitterSearchPage = ({ languages }) => {
     };
     try {
       const response = await api(request);
-      console.log(response.data);
-
       const { filteredTweets } = response["data"];
-      console.log(filteredTweets);
-
       if (filteredTweets.length) {
-        console.log(filteredTweets);
         return setTweets(filteredTweets);
       } else {
         setTweets([]);
@@ -70,8 +61,6 @@ const TwitterSearchPage = ({ languages }) => {
     }
   };
   const handleTweetSelect = tweet => {
-    console.log(tweet);
-
     const tweetDom = document.getElementById("embedTweet");
     if (typeof tweet["id_str"] === "string") {
       tweetDom.innerHTML = "";
@@ -87,7 +76,6 @@ const TwitterSearchPage = ({ languages }) => {
     return tweets.map(tweet => {
       const tdArray = []; // IMPORTENT  CODE LINE 19 -40 NEED REFACTORED OUTSIDE OF THE VIEW
       for (let key in tweet) {
-        console.log(tweet);
         switch (key) {
           case "user":
             tdArray[0] = <td key={tweet[key]}>{tweet[key]}</td>;
@@ -119,7 +107,7 @@ const TwitterSearchPage = ({ languages }) => {
     endDate = null,
     language = null
   } = searchTwitterForm;
-  console.log(noResult);
+  
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>

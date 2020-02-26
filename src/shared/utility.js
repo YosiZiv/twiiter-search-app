@@ -1,5 +1,4 @@
 export const checkValidity = (id, value, validation) => {
-  console.log(value, validation);
   let errorsMessage = null;
   if (!validation) {
     return errorsMessage;
@@ -10,11 +9,8 @@ export const checkValidity = (id, value, validation) => {
   }
 
   if (validation.minLength && value.length < validation.minLength) {
-    console.log("DEBUGGING CHECK");
-
     errorsMessage = `${id} Required min ${validation.minLength}`;
   }
-
   if (validation.maxLength && value.length > validation.maxLength) {
     errorsMessage = `${id} Required max length ${validation.maxLength}`;
   }

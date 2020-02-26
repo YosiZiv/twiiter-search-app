@@ -12,8 +12,6 @@ const TextInput = ({
 }) => {
   let className;
   className = `form-control`.concat(errorsMessage && isTouch ? ` invalid` : ``);
-  console.log(className, errorsMessage, isTouch);
-
   return (
     <div className='inputwrapper'>
       <label className='textLabel'>
