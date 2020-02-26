@@ -1,4 +1,9 @@
-.pageContainer {
-  width: 100%;
+.appContainer {
+  width: 99%;
   height: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.css-2b097c-control {
+  border-radius: 12px;
 }

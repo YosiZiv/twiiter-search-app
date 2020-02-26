@@ -8,13 +8,12 @@ function App() {
 
   useEffect(() => {
     const languagesObject = JSON.parse(JSON.stringify(languageJson));
-    // select component expect Array as input this method return array
-    const languageArray = Object.values(languagesObject);
+    const languageArray = Object.values(languagesObject); // select component expect Array as input this method return array
     setLanguages(languageArray);
   }, []);
 
   return (
-    <div className='container'>
+    <div className='appContainer'>
       <TwitterSearhPage languages={languages} />
     </div>
   );
