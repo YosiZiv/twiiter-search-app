@@ -5,120 +5,202 @@ import DatePickerComponent from "../Layout/DatePicker";
 import SelectInput from "../Layout/SelectInput";
 import Button from "../Layout/Button";
 import Table from "../Layout/Table";
-import { TwitterTweetEmbed } from "react-twitter-embed";
 import { api } from "../../httpConfig";
+import twitterLogo from "../../assets/twitter-logo.png";
+import { checkValidity, formatDateForQuery } from "../../shared/utility";
 const TwitterSearchPage = ({ languages }) => {
   const date = new Date();
-  const [searchTwitterForm, setSearchTwitterForm] = useState({});
-  const [tweets, setTweets] = useState(null);
-  const [embedTweet, setEmbedTweet] = useState(null);
-  // const [initDate, setInitDate] = useState(new Date());
-  const {
-    hashtags = "",
-    startDate = date.setDate(date.getDate() - 7),
-    endDate = null,
-    lang = null
-  } = searchTwitterForm;
-  const handleInputChange = e => {
-    const {
-      target: { id, value }
-    } = e;
-    return setSearchTwitterForm({ ...searchTwitterForm, [id]: value });
+  date.setDate(date.getDate() - 7);
+  const dateRange = {
+    minDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+    maxDate: new Date()
   };
-  const handleTimeChange = (date, id) => {
-    console.log("function work 2 ", date, id);
+  const [searchTwitterForm, setSearchTwitterForm] = useState({
+    startDate: dateRange.minDate
+  }); // init initialize form
+  const [tweets, setTweets] = useState([]);
+  const [noResult, setNoResult] = useState(false);
+  const handleInputChange = (event, validation) => {
+    const { id, value } = event.target;
 
-    setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
+    const errorsMessage = checkValidity(id, value, validation);
+    console.log(id, value, validation, errorsMessage);
+
+    return setSearchTwitterForm({
+      ...searchTwitterForm,
+      [id]: { errorsMessage, value, isTouch: true }
+    });
   };
-  console.log(embedTweet);
+  const handleTimeChange = (date, id) =>
+    setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
+
   const handleTweetSearch = async () => {
-    const method = "POST";
-    const url = `tweeter/tweets`;
+    const payload = {
+      hashtag: searchTwitterForm.hashtag,
+      startDate: formatDateForQuery(searchTwitterForm.startDate),
+      endDate: searchTwitterForm["endDate"]
+        ? formatDateForQuery(searchTwitterForm.endDate)
+        : null,
+      reqData: ["id_str", "text", "user", "created_at", "retweet_count"],
+      language: searchTwitterForm.language
+    };
+    console.log(payload);
+
     const request = {
-      url,
-      method,
-      payload: searchTwitterForm
+      url: "tweeter/tweets",
+      method: "POST",
+      payload
     };
     try {
       const response = await api(request);
       console.log(response.data);
+
       const { filteredTweets } = response["data"];
+      console.log(filteredTweets);
+
       if (filteredTweets.length) {
+        console.log(filteredTweets);
         return setTweets(filteredTweets);
+      } else {
+        setTweets([]);
+        return setNoResult(true);
       }
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   };
-  console.log(tweets);
   const handleTweetSelect = tweet => {
+    console.log(tweet);
+
     const tweetDom = document.getElementById("embedTweet");
-    tweetDom.innerHTML = "";
-    window.twttr.widgets.createTweet(tweet["id_str"], tweetDom, {
-      theme: "dark"
+    if (typeof tweet["id_str"] === "string") {
+      tweetDom.innerHTML = "";
+      return window.twttr.widgets.createTweet(tweet["id_str"], tweetDom, {
+        theme: "dark"
+      });
+    }
+    return;
+  };
+  const languageChangeHandler = lang =>
+    setSearchTwitterForm({ ...searchTwitterForm, ["language"]: lang.value });
+  const createTweetsTable = tweets => {
+    return tweets.map(tweet => {
+      const tdArray = []; // IMPORTENT  CODE LINE 19 -40 NEED REFACTORED OUTSIDE OF THE VIEW
+      for (let key in tweet) {
+        console.log(tweet);
+        switch (key) {
+          case "user":
+            tdArray[0] = <td key={tweet[key]}>{tweet[key]}</td>;
+            break;
+          case "created_at":
+            tdArray[1] = (
+              <td key={tweet[key]}>{formatDateForQuery(tweet[key])}</td>
+            );
+          case "text":
+            tdArray[2] = <td key={tweet[key]}>{tweet[key]}</td>;
+            break;
+          case "retweet_count":
+            tdArray[3] = <td key={tweet[key]}>{tweet[key]}</td>;
+            break;
+          default:
+            break;
+        }
+      }
+      return (
+        <tr key={tweet["id_str"]} onClick={() => handleTweetSelect(tweet)}>
+          {[...tdArray]}
+        </tr>
+      );
     });
-
-    // console.log(tweet);
-    // const method = "POST";
-    // const url = `tweeter/getembed`;
-    // const request = {
-    //   url,
-    //   method,
-    //   payload: tweet
-    // };
-    // try {
-    //   const response = await api(request);
-    //   const tweet = response.data.tweet;
-    //   console.log(response.data.tweet);
-
-    //   setEmbedTweet(tweet);
-    // } catch (err) {
-    //   console.log(err);
-    // }
   };
-  const createMarkup = tweet => {
-    return { __html: tweet };
-  };
+  const {
+    hashtag = "",
+    startDate,
+    endDate = null,
+    language = null
+  } = searchTwitterForm;
+  console.log(noResult);
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>
-        <h4 className='m-2 text-center'>Twitter Search App</h4>
+        <h4>Twitter Search App</h4>
+        <div className='logoWrapper'>
+          <img src={twitterLogo} />
+        </div>
+      </div>
+      <div className='formContainer'>
+        <form className='searchTweetsForm' onSubmit={e => e.preventDefault()}>
+          <div className='hashtagInputContainer'>
+            <TextInput
+              errorsMessage={hashtag.errorsMessage}
+              isTouch={hashtag ? hashtag.isTouch : false}
+              validation={{ isRequired: true, minLength: 1 }}
+              onChange={event =>
+                handleInputChange(event, { isRequired: true, minLength: 1 })
+              }
+              label='Hashtag'
+              placeholder='#'
+              id='hashtag'
+              type='text'
+              value={hashtag && hashtag.value}
+            />
+          </div>
+
+          <div className='dateContainer'>
+            <DatePickerComponent
+              minDate={dateRange.minDate}
+              maxDate={dateRange.maxDate}
+              label='Start Date'
+              id='startDate'
+              handleTimeChange={date => handleTimeChange(date, "startDate")}
+              date={startDate}
+            />
+            <DatePickerComponent
+              minDate={dateRange.minDate}
+              maxDate={dateRange.maxDate}
+              label='End Date'
+              id='endDate'
+              handleTimeChange={date => handleTimeChange(date, "endDate")}
+              date={endDate}
+            />
+          </div>
+          <div className='selectContainer'>
+            <div className='selectLang'>
+              <SelectInput
+                label='Language'
+                languageChangeHandler={languageChangeHandler}
+                languages={languages}
+              />
+            </div>
+            <div className='buttonContainer'>
+              <Button onClick={handleTweetSearch} text='Search' />
+            </div>
+          </div>
+        </form>
       </div>
 
-      <form className='formContainer' onSubmit={e => e.preventDefault()}>
-        <div>
-          <TextInput
-            handleInputChange={handleInputChange}
-            id='hashtags'
-            type='text'
-            defaultValue={hashtags}
-          />
+      {tweets.length ? (
+        <div className='tweetsContainer'>
+          <div className='tableContainer'>
+            <Table
+              formatDateForQuery={formatDateForQuery}
+              createTweetsTable={createTweetsTable}
+              onClick={handleTweetSelect}
+              tweets={tweets}
+            />
+          </div>
+          <div className='embedTweetWrapper'>
+            <div className='embedTweet' id='embedTweet'></div>
+          </div>
         </div>
-
-        <div className='d-flex'>
-          <DatePickerComponent
-            id='startDate'
-            handleTimeChange={date => handleTimeChange(date, "startDate")}
-            date={startDate}
-          />
-          <DatePickerComponent
-            id='endDate'
-            handleTimeChange={date => handleTimeChange(date, "startDate")}
-            date={endDate}
-          />
+      ) : noResult ? (
+        <div className='noTweets'>
+          <p>
+            Sorry no Tweets found try use other tags or remove date and language
+            filter{" "}
+          </p>
         </div>
-        <div>
-          <SelectInput languages={languages} />
-        </div>
-        <div className='buttonContainer'>
-          <Button onClick={handleTweetSearch} text='Search' />
-        </div>
-      </form>
-      {tweets
-        ? tweets.length && <Table onClick={handleTweetSelect} tweets={tweets} />
-        : null}
-
-      <div id='embedTweet'></div>
+      ) : null}
     </div>
   );
 };

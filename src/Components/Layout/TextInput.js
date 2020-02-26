@@ -1,37 +1,38 @@
 import React from "react";
-
-const TextInput = props => {
-  const {
-    id,
-    type,
-    required,
-    defaultValue,
-    disabled,
-    error,
-    handleInputChange
-  } = props;
+import "./TextInput.css";
+const TextInput = ({
+  id,
+  label,
+  placeholder,
+  value,
+  onChange,
+  errorsMessage = null,
+  required = false,
+  isTouch = false
+}) => {
+  let className;
+  className = `form-control`.concat(errorsMessage && isTouch ? ` invalid` : ``);
+  console.log(className, errorsMessage, isTouch);
 
   return (
-    <>
-      <h6>
-        <label className='m-0'>
-          {id}: {required && <span className='text-danger'>*</span>}
-        </label>
-      </h6>
+    <div className='inputwrapper'>
+      <label className='textLabel'>
+        {required && <span className='text-danger'>*</span>} {label} :
+      </label>
       <input
-        id={id}
-        type={type}
-        value={defaultValue}
-        disabled={disabled}
-        onChange={handleInputChange}
-        placeholder={`Enter ${id}`}
         autoComplete='off'
-        className='form-control'
+        id={id}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={className}
       />
       <div className='text-input-error-message'>
-        {error && <small className='text-danger'>{error}</small>}
+        {errorsMessage && (
+          <small className='text-danger'>{errorsMessage}</small>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 export default TextInput;

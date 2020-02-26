@@ -1,11 +1,126 @@
-.twitterPageContainer {
-  width: 100%;
+.twitterPageTitle {
+  display: flex;
+  font-family: "Lacquer";
+  text-align: center;
+  padding: 10px 3px;
 }
-.formContainer > * {
+.twitterPageTitle h4 {
+  padding-top: 15px;
+  width: 82%;
+  font-size: 7vw;
+}
+.logoWrapper {
+  width: 12%;
   margin-top: 20px;
 }
-
-.buttonContainer {
+.logoWrapper img {
   width: 100%;
-  text-align: center;
+  height: 80%;
 }
+.formContainer {
+  background: #6ab1ff;
+  padding: 20px 0 30px 0;
+  border-radius: 6px;
+  box-shadow: 1px 4px 12px -3px rgba(32, 32, 32, 0.76);
+}
+.searchTweetsForm > * {
+  margin-top: 20px;
+  padding: 0 10px;
+}
+.searchTweetsForm {
+  padding: 0 20px;
+}
+.dateContainer {
+  display: flex;
+}
+.selectContainer {
+  display: flex;
+}
+.buttonContainer {
+  margin-left: 5px;
+  width: 35%;
+}
+.buttonContainer button {
+  margin-top: 32px;
+}
+.selectLang {
+  width: 65%;
+}
+.dateContainer {
+  display: block;
+}
+.tweetsContainer {
+  display: block;
+  padding: 10px;
+  width: 100%;
+}
+.tableContainer {
+  width: 100%;
+}
+.embedTweet {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.datePicker input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-radius: 2px;
+}
+.datePicker {
+  padding: 2px;
+}
+.noTweets {
+  padding-top: 20px;
+  text-align: center;
+  font-size: 25px;
+}
+@media screen and (min-width: 800px) {
+  .searchTweetsForm {
+    display: flex;
+  }
+  .dateContainer {
+    display: flex;
+  }
+  .selectContainer {
+    /* border-radius: 30px; */
+
+    width: 50%;
+  }
+  .selectLang {
+    width: 100%;
+    padding-right: 5px;
+  }
+  .selectLang input {
+    border-radius: 17px;
+  }
+  .tweetsContainer {
+    display: flex;
+    justify-content: space-around;
+  }
+  .tableContainer {
+    width: 65%;
+  }
+
+  .twitter-tweet {
+    margin: 0 auto;
+  }
+  .embedTweetWrapper {
+    width: 30%;
+    margin: 0 auto;
+  }
+  .embedTweet {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+/* .datePicker input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  border-radius: 2px;
+}
+.datePicker {
+  padding: 2px;
+} */

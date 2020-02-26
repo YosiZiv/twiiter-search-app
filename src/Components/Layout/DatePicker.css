@@ -1,9 +1,25 @@
-.datePicker {
-  padding: 2px;
-}
 .datePicker input {
   width: 100%;
   border: 1px solid #ced4da;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  border-radius: 2px;
+  border-radius: 5px;
+  padding: 5px;
+}
+.datePicker input::placeholder {
+  color: #ffffff;
+}
+.react-datepicker-wrapper {
+  display: block;
+}
+.datePicker {
+  padding: 2px;
+}
+@media screen and (min-width: 800px) {
+  .datePickerContainer {
+    padding: 0 5px;
+  }
+  /* .datePickerContainer {
+    justify-content: space-between;
+    width: 100%;
+  } */
 }

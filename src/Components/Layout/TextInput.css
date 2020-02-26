@@ -1,3 +1,15 @@
+.inputwrapper input {
+  text-indent: 11px;
+}
+.inputwrapper input::placeholder {
+  text-indent: 1px;
+}
+.textLabel {
+  color: #ffffff;
+  font-family: "Simonetta";
+  margin-bottom: 1.3px;
+  font-size: 20px;
+}
 .invalid {
   border: 1px solid red;
   background-color: #fda49a;
