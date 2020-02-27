@@ -70,8 +70,11 @@ const TwitterSearchPage = ({ languages }) => {
     }
     return;
   };
-  const languageChangeHandler = lang =>
+  const languageChangeHandler = lang => {
+    console.log(lang);
+
     setSearchTwitterForm({ ...searchTwitterForm, ["language"]: lang.value });
+  };
   const createTweetsTable = tweets => {
     return tweets.map(tweet => {
       const tdArray = []; // IMPORTENT  CODE LINE 19 -40 NEED REFACTORED OUTSIDE OF THE VIEW
@@ -107,7 +110,7 @@ const TwitterSearchPage = ({ languages }) => {
     endDate = null,
     language = null
   } = searchTwitterForm;
-  
+
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>
