@@ -1,5 +1,6 @@
 import Axios from "axios";
 
+// "http://localhost:4000/api"
 const axios = Axios.create({
   baseURL: "http://ec2-18-185-92-148.eu-central-1.compute.amazonaws.com/api"
 });

@@ -32,6 +32,9 @@ const TwitterSearchPage = ({ languages }) => {
     setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
 
   const handleTweetSearch = async () => {
+    console.log("INSIDE");
+    setNoResult(false);
+    setTweets([]);
     const payload = {
       hashtag: searchTwitterForm.hashtag,
       startDate: formatDateForQuery(searchTwitterForm.startDate),
@@ -46,7 +49,15 @@ const TwitterSearchPage = ({ languages }) => {
       method: "POST",
       payload
     };
+    console.log(hashtag);
+
     try {
+      if (
+        (typeof hashtag.value !== "string" || !hashtag.value.length) &&
+        typeof hashtag.value !== Number
+      ) {
+        return setNoResult(true);
+      }
       setLoading(true);
       const response = await api(request);
       const { filteredTweets } = response["data"];
@@ -59,6 +70,10 @@ const TwitterSearchPage = ({ languages }) => {
         return setNoResult(true);
       }
     } catch (err) {
+      setLoading(false);
+      setTweets([]);
+      console.log(err);
+
       throw err;
     }
   };
@@ -192,10 +207,7 @@ const TwitterSearchPage = ({ languages }) => {
         </div>
       ) : noResult ? (
         <div className='noTweets'>
-          <p>
-            Sorry no Tweets found try use other tags or remove date and language
-            filter{" "}
-          </p>
+          <p>No Tweets Found Try Use Other Tags And Remove Filters</p>
         </div>
       ) : null}
       {loading && (
