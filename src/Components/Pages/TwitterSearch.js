@@ -9,8 +9,6 @@ import { api } from "../../httpConfig";
 import twitterLogo from "../../assets/twitter-logo.png";
 import { checkValidity, formatDateForQuery } from "../../shared/utility";
 const TwitterSearchPage = ({ languages }) => {
-  const date = new Date();
-  date.setDate(date.getDate() - 7);
   const dateRange = {
     minDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
     maxDate: new Date()
@@ -20,6 +18,7 @@ const TwitterSearchPage = ({ languages }) => {
   }); // init initialize form
   const [tweets, setTweets] = useState([]);
   const [noResult, setNoResult] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleInputChange = (event, validation) => {
     const { id, value } = event.target;
 
@@ -48,11 +47,14 @@ const TwitterSearchPage = ({ languages }) => {
       payload
     };
     try {
+      setLoading(true);
       const response = await api(request);
       const { filteredTweets } = response["data"];
       if (filteredTweets.length) {
+        setLoading(false);
         return setTweets(filteredTweets);
       } else {
+        setLoading(false);
         setTweets([]);
         return setNoResult(true);
       }
@@ -140,14 +142,14 @@ const TwitterSearchPage = ({ languages }) => {
           <div className='dateContainer'>
             <DatePickerComponent
               minDate={dateRange.minDate}
-              maxDate={dateRange.maxDate}
+              maxDate={endDate ? endDate : dateRange.maxDate}
               label='Start Date'
               id='startDate'
               handleTimeChange={date => handleTimeChange(date, "startDate")}
               date={startDate}
             />
             <DatePickerComponent
-              minDate={dateRange.minDate}
+              minDate={startDate ? startDate : dateRange.minDate}
               maxDate={dateRange.maxDate}
               label='End Date'
               id='endDate'
@@ -164,7 +166,11 @@ const TwitterSearchPage = ({ languages }) => {
               />
             </div>
             <div className='buttonContainer'>
-              <Button onClick={handleTweetSearch} text='Search' />
+              <Button
+                loading={loading}
+                onClick={handleTweetSearch}
+                text='Search'
+              />
             </div>
           </div>
         </form>
@@ -192,6 +198,11 @@ const TwitterSearchPage = ({ languages }) => {
           </p>
         </div>
       ) : null}
+      {loading && (
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
+          <h1>LOADING..... PLEASE WAIT</h1>
+        </div>
+      )}
     </div>
   );
 };
