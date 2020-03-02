@@ -6,12 +6,11 @@ import "./App.css";
 function App() {
   const [languages, setLanguages] = useState([]); // languages for select component
 
+  // THIS USE EFFECT RUN ONCE ON APP BOOTSTRAP FOR PARSE LANG
   useEffect(() => {
-    const languagesParsh = JSON.parse(JSON.stringify(languageJson));
-    console.log(languagesParsh);
-    setLanguages(languagesParsh);
+    const languagesParse = JSON.parse(JSON.stringify(languageJson));
+    setLanguages(languagesParse);
   }, []);
-  console.log(languages);
   return (
     <div className='appContainer'>
       <TwitterSearhPage languages={languages} />
@@ -20,9 +19,3 @@ function App() {
 }
 
 export default App;
-
-// const languageArray = JSON.parse(JSON.stringify(languageJson));
-// // select component expect Array as input this method return array
-// // console.log(languagesObject);
-// // const languageArray = Object.values(languagesObject);
-// setLanguages(languageArray);

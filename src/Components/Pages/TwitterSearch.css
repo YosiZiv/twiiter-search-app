@@ -28,7 +28,7 @@
   padding: 0 10px;
 }
 .searchTweetsForm {
-  padding: 0 20px;
+  padding: 10px 10px 46px 10px;
 }
 .dateContainer {
   display: flex;
@@ -76,6 +76,15 @@
   text-align: center;
   font-size: 25px;
 }
+.spinnerContainer {
+  margin-top: 30px;
+  width: 100%;
+}
+.spinnerWrapper {
+  margin: 0 auto;
+  height: 50px;
+  width: 50px;
+}
 @media screen and (min-width: 800px) {
   .searchTweetsForm {
     display: flex;
@@ -106,14 +115,14 @@
   .twitter-tweet {
     margin: 0 auto;
   }
-  .embedTweetWrapper {
+  /* .embedTweetWrapper {
     width: 30%;
     margin: 0 auto;
   }
   .embedTweet {
     max-width: 100%;
     margin: 0 auto;
-  }
+  } */
 }
 /* .datePicker input {
   width: 100%;

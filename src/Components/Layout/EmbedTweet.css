@@ -1,0 +1,8 @@
+.embedTweetWrapper {
+}
+@media screen and (min-width: 800px) {
+  .embedTweetWrapper {
+    width: 30%;
+    margin: 0 auto;
+  }
+}

@@ -8,6 +8,9 @@ import Table from "../Layout/Table";
 import { api } from "../../httpConfig";
 import twitterLogo from "../../assets/twitter-logo.png";
 import { checkValidity, formatDateForQuery } from "../../shared/utility";
+import Spinner from "../Layout/Spinner";
+import EmbedTweet from "../Layout/EmbedTweet";
+import Popup from "../Layout/Popup";
 const TwitterSearchPage = ({ languages }) => {
   const dateRange = {
     minDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
@@ -87,11 +90,8 @@ const TwitterSearchPage = ({ languages }) => {
     }
     return;
   };
-  const languageChangeHandler = lang => {
-    console.log(lang);
-
-    setSearchTwitterForm({ ...searchTwitterForm, ["language"]: lang.value });
-  };
+  const languageChangeHandler = lang =>
+    setSearchTwitterForm({ ...searchTwitterForm, language: lang.value });
   const createTweetsTable = tweets => {
     return tweets.map(tweet => {
       const tdArray = []; // IMPORTENT  CODE LINE 19 -40 NEED REFACTORED OUTSIDE OF THE VIEW
@@ -104,6 +104,7 @@ const TwitterSearchPage = ({ languages }) => {
             tdArray[1] = (
               <td key={tweet[key]}>{formatDateForQuery(tweet[key])}</td>
             );
+            break;
           case "text":
             tdArray[2] = <td key={tweet[key]}>{tweet[key]}</td>;
             break;
@@ -121,19 +122,14 @@ const TwitterSearchPage = ({ languages }) => {
       );
     });
   };
-  const {
-    hashtag = "",
-    startDate,
-    endDate = null,
-    language = null
-  } = searchTwitterForm;
+  const { hashtag = "", startDate, endDate = null } = searchTwitterForm;
 
   return (
     <div className='twitterPageContainer'>
       <div className='twitterPageTitle'>
         <h4>Twitter Search App</h4>
         <div className='logoWrapper'>
-          <img src={twitterLogo} />
+          <img src={twitterLogo} alt='twitter-logo' />
         </div>
       </div>
       <div className='formContainer'>
@@ -201,9 +197,7 @@ const TwitterSearchPage = ({ languages }) => {
               tweets={tweets}
             />
           </div>
-          <div className='embedTweetWrapper'>
-            <div className='embedTweet' id='embedTweet'></div>
-          </div>
+          <EmbedTweet />
         </div>
       ) : noResult ? (
         <div className='noTweets'>
@@ -211,8 +205,11 @@ const TwitterSearchPage = ({ languages }) => {
         </div>
       ) : null}
       {loading && (
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <h1>LOADING..... PLEASE WAIT</h1>
+        <div className='spinnerContainer'>
+          <div className='spinnerWrapper'>
+            <Spinner />
+          </div>
+          <Popup />
         </div>
       )}
     </div>
