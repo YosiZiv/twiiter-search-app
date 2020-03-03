@@ -10,7 +10,6 @@ import twitterLogo from "../../assets/twitter-logo.png";
 import { checkValidity, formatDateForQuery } from "../../shared/utility";
 import Spinner from "../Layout/Spinner";
 import EmbedTweet from "../Layout/EmbedTweet";
-import Popup from "../Layout/Popup";
 const TwitterSearchPage = ({ languages }) => {
   const dateRange = {
     minDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
@@ -35,9 +34,7 @@ const TwitterSearchPage = ({ languages }) => {
     setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
 
   const handleTweetSearch = async () => {
-    console.log("INSIDE");
-    setNoResult(false);
-    setTweets([]);
+    setLoading(true);
     const payload = {
       hashtag: searchTwitterForm.hashtag,
       startDate: formatDateForQuery(searchTwitterForm.startDate),
@@ -61,20 +58,20 @@ const TwitterSearchPage = ({ languages }) => {
       ) {
         return setNoResult(true);
       }
-      setLoading(true);
+
       const response = await api(request);
       const { filteredTweets } = response["data"];
       if (filteredTweets.length) {
+        setTweets(filteredTweets);
         setLoading(false);
-        return setTweets(filteredTweets);
       } else {
-        setLoading(false);
         setTweets([]);
-        return setNoResult(true);
+        setNoResult(true);
+        setLoading(false);
       }
     } catch (err) {
-      setLoading(false);
       setTweets([]);
+      setLoading(false);
       console.log(err);
 
       throw err;
@@ -123,6 +120,7 @@ const TwitterSearchPage = ({ languages }) => {
     });
   };
   const { hashtag = "", startDate, endDate = null } = searchTwitterForm;
+  console.log(loading);
 
   return (
     <div className='twitterPageContainer'>
@@ -189,6 +187,7 @@ const TwitterSearchPage = ({ languages }) => {
 
       {tweets.length ? (
         <div className='tweetsContainer'>
+          <EmbedTweet />
           <div className='tableContainer'>
             <Table
               formatDateForQuery={formatDateForQuery}
@@ -197,7 +196,6 @@ const TwitterSearchPage = ({ languages }) => {
               tweets={tweets}
             />
           </div>
-          <EmbedTweet />
         </div>
       ) : noResult ? (
         <div className='noTweets'>
@@ -209,7 +207,6 @@ const TwitterSearchPage = ({ languages }) => {
           <div className='spinnerWrapper'>
             <Spinner />
           </div>
-          <Popup />
         </div>
       )}
     </div>

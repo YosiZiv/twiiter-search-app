@@ -57,10 +57,6 @@
 .tableContainer {
   width: 100%;
 }
-.embedTweet {
-  width: 90%;
-  margin: 0 auto;
-}
 
 .datePicker input {
   width: 100%;
@@ -85,6 +81,7 @@
   height: 50px;
   width: 50px;
 }
+
 @media screen and (min-width: 800px) {
   .searchTweetsForm {
     display: flex;

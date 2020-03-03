@@ -3,7 +3,7 @@
   overflow: scroll;
   margin: 10px 0;
   border: 1px solid black;
-  font-size: 14px;
+  font-size: 10px;
   font-family: "Simonetta";
   color: #1c1d1e;
   text-shadow: 1px 1px white;
@@ -30,4 +30,7 @@
   background-color: #f3f4f5;
 }
 @media screen and (min-width: 800px) {
+  .tableContainer table {
+    font-size: 15px;
+  }
 }
