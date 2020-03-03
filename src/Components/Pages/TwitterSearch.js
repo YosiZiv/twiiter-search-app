@@ -18,8 +18,8 @@ const TwitterSearchPage = ({ languages }) => {
   const [searchTwitterForm, setSearchTwitterForm] = useState({
     startDate: dateRange.minDate
   }); // init initialize form
-  const [tweets, setTweets] = useState([]);
-  const [noResult, setNoResult] = useState(false);
+  const [tweets, setTweets] = useState([]); // init return tweets from api defualt empty array
+  const [noResult, setNoResult] = useState(false); // for ui boolean control
   const [loading, setLoading] = useState(false);
   const handleInputChange = (event, validation) => {
     const { id, value } = event.target;
@@ -85,7 +85,6 @@ const TwitterSearchPage = ({ languages }) => {
         theme: "dark"
       });
     }
-    return;
   };
   const languageChangeHandler = lang =>
     setSearchTwitterForm({ ...searchTwitterForm, language: lang.value });

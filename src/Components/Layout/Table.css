@@ -1,7 +1,6 @@
 .tableContainer table {
-  width: 100%;
-  overflow: scroll;
-  margin: 10px 0;
+  width: 95%;
+  margin: 0 auto;
   border: 1px solid black;
   font-size: 10px;
   font-family: "Simonetta";

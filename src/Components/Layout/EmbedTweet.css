@@ -1,5 +1,8 @@
+.embedTweet {
+  text-align: center;
+}
 @media screen and (min-width: 800px) {
   .embedTweetWrapper {
-    width: 30%;
+    max-width: 30%;
   }
 }

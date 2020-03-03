@@ -1,7 +1,8 @@
 import React from "react";
-import Spinkit from "react-spinkit";
 import "./Spinner.css";
 const Spinner = () => (
-  <Spinkit color='#6ab1ff' className='spinner' name='circle' />
+  <div class='spinner-border text-primary' role='status'>
+    <span class='sr-only'>Loading...</span>
+  </div>
 );
 export default Spinner;

@@ -1,9 +1,10 @@
 import React from "react";
 import "./Table.css";
-const Table = ({ tweets, onClick, createTweetsTable }) => {
+const Table = ({ tweets, onClick, createTweetsTable, selectTweet }) => {
+  const width = selectTweet ? "minWidth" : "fullWidth";
   return (
     <>
-      <table>
+      <table className={width}>
         <thead>
           <tr>
             <th>Name</th>
