@@ -1,8 +1,8 @@
 import Axios from "axios";
 
-// "http://localhost:4000/api"
+// "http://ec2-18-185-92-148.eu-central-1.compute.amazonaws.com/api"  production server
 const axios = Axios.create({
-  baseURL: "http://ec2-18-185-92-148.eu-central-1.compute.amazonaws.com/api"
+  baseURL: "http://localhost:4000/api"
 });
 export const api = async ({ url, method, payload = null }) => {
   let response;
