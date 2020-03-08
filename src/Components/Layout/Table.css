@@ -1,35 +1,33 @@
 .tableContainer table {
-  width: 95%;
-  margin: 0 auto;
-  border: 1px solid black;
-  font-size: 10px;
+  width: 100%;
+  border: 1px solid #919192;
+  font-size: 11px;
   font-family: "Simonetta";
   color: #1c1d1e;
   text-shadow: 1px 1px white;
 }
-.tableContainer thead {
-  border-bottom: 1px solid black;
-}
+
 .tableContainer th {
   background-color: #f3f4f5;
 }
 .tableContainer tr {
-  background-color: #cdd5dd;
+  background-color: #6ab1ff;
   cursor: pointer;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #919192;
 }
 .tableContainer tr:nth-child(even) {
-  background-color: #dce1e6;
+  background-color: #ffffff;
 }
 .tableContainer td {
-  border-right: 1px solid black;
+  border-right: 1px solid #919192;
 }
 
 .tableContainer tr:hover {
-  background-color: #f3f4f5;
+  background-color: #bcc1a0;
+  opacity: 0.8;
 }
 @media screen and (min-width: 800px) {
   .tableContainer table {
-    font-size: 15px;
+    font-size: 16px;
   }
 }

@@ -11,15 +11,3 @@
 .react-datepicker-wrapper {
   display: block;
 }
-.datePicker {
-  padding: 2px;
-}
-@media screen and (min-width: 800px) {
-  .datePickerContainer {
-    padding: 0 5px;
-  }
-  /* .datePickerContainer {
-    justify-content: space-between;
-    width: 100%;
-  } */
-}

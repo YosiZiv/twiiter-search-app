@@ -1,8 +1,18 @@
-.embedTweet {
-  text-align: center;
+.embedTweetWrapper {
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  opacity: 0.85;
 }
-@media screen and (min-width: 800px) {
-  .embedTweetWrapper {
-    max-width: 30%;
-  }
+.closeTweet {
+  font-size: 42px;
+  position: absolute;
+  right: 48.5%;
+  z-index: 20;
+  color: #ffffff;
+  text-shadow: 2px 2px #7b7e6c;
+}
+.closeTweet:hover {
+  color: #ffffff;
+  text-shadow: 2px 2px #7b7e6c;
 }

@@ -10,59 +10,78 @@ import twitterLogo from "../../assets/twitter-logo.png";
 import { checkValidity, formatDateForQuery } from "../../shared/utility";
 import Spinner from "../Layout/Spinner";
 import EmbedTweet from "../Layout/EmbedTweet";
+
 const TwitterSearchPage = ({ languages }) => {
   const dateRange = {
     minDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
     maxDate: new Date()
   };
   const [searchTwitterForm, setSearchTwitterForm] = useState({
-    startDate: dateRange.minDate
+    hashtag: {
+      value: "",
+      errorsMessage: null,
+      validation: { isRequired: true, minLength: 1 },
+      isTouch: false
+    },
+    startDate: dateRange.minDate,
+    endDate: dateRange.maxDate,
+    language: ""
   }); // init initialize form
   const [tweets, setTweets] = useState([]); // init return tweets from api defualt empty array
   const [noResult, setNoResult] = useState(false); // for ui boolean control
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // loading controller
+  const [tweetSelect, setTweetSelect] = useState(false);
   const handleInputChange = (event, validation) => {
     const { id, value } = event.target;
 
     const errorsMessage = checkValidity(id, value, validation);
     return setSearchTwitterForm({
       ...searchTwitterForm,
-      [id]: { errorsMessage, value, isTouch: true }
+      [id]: { errorsMessage, value, isTouch: true, validation }
     });
   };
   const handleTimeChange = (date, id) =>
     setSearchTwitterForm({ ...searchTwitterForm, [id]: date });
 
   const handleTweetSearch = async () => {
-    setLoading(true);
-    const payload = {
-      hashtag: searchTwitterForm.hashtag,
-      startDate: formatDateForQuery(searchTwitterForm.startDate),
-      endDate: searchTwitterForm["endDate"]
-        ? formatDateForQuery(searchTwitterForm.endDate)
-        : null,
-      reqData: ["id_str", "text", "user", "created_at", "retweet_count"],
-      language: searchTwitterForm.language
-    };
-    const request = {
-      url: "tweeter/tweets",
-      method: "POST",
-      payload
-    };
+    const { hashtag, startDate, endDate, language } = searchTwitterForm;
     console.log(hashtag);
 
+    const errorsMessage = checkValidity(
+      "hashtag",
+      hashtag.value,
+      hashtag.validation
+    );
+    console.log(errorsMessage);
+    if (errorsMessage) {
+      return setSearchTwitterForm({
+        ...searchTwitterForm,
+        hashtag: { ...hashtag, errorsMessage }
+      });
+    }
+    const params = {
+      hashtag: hashtag.value,
+      startDate: formatDateForQuery(startDate),
+      endDate: formatDateForQuery(endDate),
+      filters: ["id_str", "text", "user", "created_at", "retweet_count"]
+    };
+    if (language.length) {
+      params.language = language;
+    }
+    const request = {
+      url: "tweeter/hashtag",
+      method: "GET",
+      params
+    };
     try {
-      if (
-        (typeof hashtag.value !== "string" || !hashtag.value.length) &&
-        typeof hashtag.value !== Number
-      ) {
-        return setNoResult(true);
-      }
-
+      setLoading(true);
+      setTweets([]);
+      setNoResult(false);
       const response = await api(request);
-      const { filteredTweets } = response["data"];
-      if (filteredTweets.length) {
-        setTweets(filteredTweets);
+      const { tweets } = response["data"];
+      console.log("what is filter ", tweets);
+      if (tweets.length) {
+        setTweets(tweets);
         setLoading(false);
       } else {
         setTweets([]);
@@ -72,8 +91,8 @@ const TwitterSearchPage = ({ languages }) => {
     } catch (err) {
       setTweets([]);
       setLoading(false);
+      setNoResult(true);
       console.log(err);
-
       throw err;
     }
   };
@@ -81,16 +100,23 @@ const TwitterSearchPage = ({ languages }) => {
     const tweetDom = document.getElementById("embedTweet");
     if (typeof tweet["id_str"] === "string") {
       tweetDom.innerHTML = "";
+      setTweetSelect(true);
       return window.twttr.widgets.createTweet(tweet["id_str"], tweetDom, {
         theme: "dark"
       });
     }
   };
+  const handleTweetClose = () => {
+    document.getElementById("embedTweet").innerHTML = "";
+    setTweetSelect(false);
+  };
   const languageChangeHandler = lang =>
     setSearchTwitterForm({ ...searchTwitterForm, language: lang.value });
+
   const createTweetsTable = tweets => {
+    // CREATE AND ORDER TABLE ROW FUNCTION
     return tweets.map(tweet => {
-      const tdArray = []; // IMPORTENT  CODE LINE 19 -40 NEED REFACTORED OUTSIDE OF THE VIEW
+      const tdArray = [];
       for (let key in tweet) {
         switch (key) {
           case "user":
@@ -111,6 +137,7 @@ const TwitterSearchPage = ({ languages }) => {
             break;
         }
       }
+      // RETURN EVERY TWEET AS A ROW OF DATA
       return (
         <tr key={tweet["id_str"]} onClick={() => handleTweetSelect(tweet)}>
           {[...tdArray]}
@@ -118,11 +145,9 @@ const TwitterSearchPage = ({ languages }) => {
       );
     });
   };
-  const { hashtag = "", startDate, endDate = null } = searchTwitterForm;
-  console.log(loading);
-
+  const { hashtag, startDate, endDate } = searchTwitterForm;
   return (
-    <div className='twitterPageContainer'>
+    <>
       <div className='twitterPageTitle'>
         <h4>Twitter Search App</h4>
         <div className='logoWrapper'>
@@ -135,7 +160,7 @@ const TwitterSearchPage = ({ languages }) => {
             <TextInput
               errorsMessage={hashtag.errorsMessage}
               isTouch={hashtag ? hashtag.isTouch : false}
-              validation={{ isRequired: true, minLength: 1 }}
+              validation={hashtag.validation}
               onChange={event =>
                 handleInputChange(event, { isRequired: true, minLength: 1 })
               }
@@ -146,7 +171,6 @@ const TwitterSearchPage = ({ languages }) => {
               value={hashtag && hashtag.value}
             />
           </div>
-
           <div className='dateContainer'>
             <DatePickerComponent
               minDate={dateRange.minDate}
@@ -186,7 +210,10 @@ const TwitterSearchPage = ({ languages }) => {
 
       {tweets.length ? (
         <div className='tweetsContainer'>
-          <EmbedTweet />
+          <EmbedTweet
+            handleTweetClose={handleTweetClose}
+            tweetSelect={tweetSelect}
+          />
           <div className='tableContainer'>
             <Table
               formatDateForQuery={formatDateForQuery}
@@ -208,7 +235,7 @@ const TwitterSearchPage = ({ languages }) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 export default TwitterSearchPage;

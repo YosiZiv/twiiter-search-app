@@ -4,11 +4,11 @@ import Axios from "axios";
 const axios = Axios.create({
   baseURL: "http://localhost:4000/api"
 });
-export const api = async ({ url, method, payload = null }) => {
+export const api = async ({ url, method, params = null, payload = null }) => {
   let response;
   try {
     if (method === "GET") {
-      response = await axios.get(url, payload);
+      response = await axios.get(url, { params: { ...params } });
       return response;
     } else {
       response = await axios.post(url, payload);
