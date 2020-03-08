@@ -45,14 +45,11 @@ const TwitterSearchPage = ({ languages }) => {
 
   const handleTweetSearch = async () => {
     const { hashtag, startDate, endDate, language } = searchTwitterForm;
-    console.log(hashtag);
-
     const errorsMessage = checkValidity(
       "hashtag",
       hashtag.value,
       hashtag.validation
     );
-    console.log(errorsMessage);
     if (errorsMessage) {
       return setSearchTwitterForm({
         ...searchTwitterForm,
@@ -79,7 +76,6 @@ const TwitterSearchPage = ({ languages }) => {
       setNoResult(false);
       const response = await api(request);
       const { tweets } = response["data"];
-      console.log("what is filter ", tweets);
       if (tweets.length) {
         setTweets(tweets);
         setLoading(false);
@@ -92,7 +88,6 @@ const TwitterSearchPage = ({ languages }) => {
       setTweets([]);
       setLoading(false);
       setNoResult(true);
-      console.log(err);
       throw err;
     }
   };
