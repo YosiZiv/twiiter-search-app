@@ -2,7 +2,7 @@ import Axios from "axios";
 
 // "http://ec2-18-185-92-148.eu-central-1.compute.amazonaws.com/api"  production server
 const axios = Axios.create({
-  baseURL: "http://localhost:4000/api"
+  baseURL: "http://ec2-18-185-92-148.eu-central-1.compute.amazonaws.com/api"
 });
 export const api = async ({ url, method, params = null, payload = null }) => {
   let response;
