@@ -5,5 +5,4 @@ run npm i
 run npm start
 go to http://localhost:3000
 
-visit https://github.com/YosiZiv/TwitterSearchServer  
-for expample Nodejs server for application
+backend repostory https://github.com/YosiZiv/TwitterSearchServer
